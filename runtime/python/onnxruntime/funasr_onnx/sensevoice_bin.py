@@ -3,8 +3,6 @@
 # Copyright FunASR (https://github.com/FunAudioLLM/SenseVoice). All Rights Reserved.
 #  MIT License  (https://opensource.org/licenses/MIT)
 
-
-import torch
 import os.path
 import librosa
 import numpy as np
@@ -94,7 +92,7 @@ class SenseVoiceSmall:
             return self.lid_dict[lid]
         else:
             raise ValueError(
-                f"The language {l} is not in {list(self.lid_dict.keys())}"
+                f"The language {lid} is not in {list(self.lid_dict.keys())}"
             )
             
     def _get_tnid(self, tnid):
@@ -181,12 +179,14 @@ class SenseVoiceSmall:
             )
             for b in range(feats.shape[0]):
                 # back to torch.Tensor
-                if isinstance(ctc_logits, np.ndarray):
-                    ctc_logits = torch.from_numpy(ctc_logits).float()
+                # if isinstance(ctc_logits, np.ndarray):
+                #     ctc_logits = torch.from_numpy(ctc_logits).float()
                 # support batch_size=1 only currently
                 x = ctc_logits[b, : encoder_out_lens[b].item(), :]
-                yseq = x.argmax(dim=-1)
-                yseq = torch.unique_consecutive(yseq, dim=-1)
+                yseq = np.argmax(x, axis=-1)
+                # Use np.diff and np.where instead of torch.unique_consecutive.
+                mask = np.concatenate(([True], np.diff(yseq) != 0))
+                yseq = yseq[mask]
 
                 mask = yseq != self.blank_id
                 token_int = yseq[mask].tolist()

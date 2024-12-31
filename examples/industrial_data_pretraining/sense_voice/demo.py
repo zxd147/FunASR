@@ -20,12 +20,27 @@ model = AutoModel(
 res = model.generate(
     input=f"{model.model_path}/example/en.mp3",
     cache={},
-    language="auto",  # "zn", "en", "yue", "ja", "ko", "nospeech"
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
     use_itn=True,
     batch_size_s=60,
     merge_vad=True,  #
     merge_length_s=15,
 )
+text = rich_transcription_postprocess(res[0]["text"])
+print(text)
+
+# en with timestamp
+res = model.generate(
+    input=f"{model.model_path}/example/en.mp3",
+    cache={},
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
+    use_itn=True,
+    batch_size_s=60,
+    merge_vad=True,  #
+    merge_length_s=15,
+    output_timestamp=True,
+)
+print(res)
 text = rich_transcription_postprocess(res[0]["text"])
 print(text)
 
@@ -33,7 +48,7 @@ print(text)
 res = model.generate(
     input=f"{model.model_path}/example/zh.mp3",
     cache={},
-    language="auto",  # "zn", "en", "yue", "ja", "ko", "nospeech"
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
     use_itn=True,
     batch_size_s=60,
     merge_vad=True,  #
@@ -42,11 +57,26 @@ res = model.generate(
 text = rich_transcription_postprocess(res[0]["text"])
 print(text)
 
+# zh with timestamp
+res = model.generate(
+    input=f"{model.model_path}/example/zh.mp3",
+    cache={},
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
+    use_itn=True,
+    batch_size_s=60,
+    merge_vad=True,  #
+    merge_length_s=15,
+    output_timestamp=True,
+)
+print(res)
+text = rich_transcription_postprocess(res[0]["text"])
+print(text)
+
 # yue
 res = model.generate(
     input=f"{model.model_path}/example/yue.mp3",
     cache={},
-    language="auto",  # "zn", "en", "yue", "ja", "ko", "nospeech"
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
     use_itn=True,
     batch_size_s=60,
     merge_vad=True,  #
@@ -59,7 +89,7 @@ print(text)
 res = model.generate(
     input=f"{model.model_path}/example/ja.mp3",
     cache={},
-    language="auto",  # "zn", "en", "yue", "ja", "ko", "nospeech"
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
     use_itn=True,
     batch_size_s=60,
     merge_vad=True,  #
@@ -73,7 +103,7 @@ print(text)
 res = model.generate(
     input=f"{model.model_path}/example/ko.mp3",
     cache={},
-    language="auto",  # "zn", "en", "yue", "ja", "ko", "nospeech"
+    language="auto",  # "zh", "en", "yue", "ja", "ko", "nospeech"
     use_itn=True,
     batch_size_s=60,
     merge_vad=True,  #
